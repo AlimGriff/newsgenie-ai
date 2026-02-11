@@ -1,45 +1,54 @@
-from transformers import pipeline
-import logging
 from typing import List, Dict
+import logging
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 class ArticleSummarizer:
-    """Summarize news articles using transformer models."""
+    """Summarize news articles using extractive summarization."""
     
-    def __init__(self, model_name: str = "facebook/bart-large-cnn"):
-        try:
-            self.summarizer = pipeline("summarization", model=model_name)
-            logger.info(f"Loaded summarization model: {model_name}")
-        except Exception as e:
-            logger.error(f"Error loading model: {e}")
-            self.summarizer = None
+    def __init__(self, model_name: str = None):
+        # Simple extractive summarization - no heavy models needed
+        logger.info("Initialized simple summarizer")
     
     def summarize(self, text: str, max_length: int = 150, min_length: int = 50) -> str:
-        """Generate summary for a single text."""
-        if not self.summarizer or not text:
-            return text[:200] + "..." if len(text) > 200 else text
+        """Generate summary using simple extractive method."""
+        if not text:
+            return ""
         
         try:
-            # Split long texts into chunks
-            max_chunk_size = 1024
-            if len(text) > max_chunk_size:
-                text = text[:max_chunk_size]
+            # Split into sentences
+            sentences = re.split(r'[.!?]+', text)
+            sentences = [s.strip() for s in sentences if s.strip()]
             
-            summary = self.summarizer(
-                text,
-                max_length=max_length,
-                min_length=min_length,
-                do_sample=False
-            )
+            if not sentences:
+                return text[:max_length] + "..."
             
-            return summary[0]['summary_text']
+            # Take first 2-3 sentences as summary
+            summary_sentences = []
+            current_length = 0
+            
+            for sentence in sentences[:5]:  # Check first 5 sentences
+                if current_length + len(sentence) <= max_length:
+                    summary_sentences.append(sentence)
+                    current_length += len(sentence)
+                else:
+                    break
+            
+            if not summary_sentences:
+                summary_sentences = [sentences[0]]
+            
+            summary = '. '.join(summary_sentences)
+            if not summary.endswith('.'):
+                summary += '.'
+            
+            return summary
         
         except Exception as e:
             logger.error(f"Error summarizing text: {e}")
-            return text[:200] + "..." if len(text) > 200 else text
+            return text[:max_length] + "..." if len(text) > max_length else text
     
     def summarize_batch(self, articles: List[Dict]) -> List[Dict]:
         """Summarize multiple articles."""
