@@ -38,16 +38,41 @@ class ArticleCategorizer:
                 'hiring', 'layoff', 'expansion', 'growth strategy', 'business model'
             ],
             'Finance': [
+                # Core finance terms
                 'finance', 'financial', 'economy', 'economic', 'market', 'stock', 'stocks', 'share',
                 'shares', 'trading', 'trader', 'investment', 'investor', 'investing', 'portfolio',
-                'wall street', 'bank', 'banking', 'central bank', 'federal reserve', 'interest rate',
-                'bonds', 'treasury', 'equity', 'commodities', 'forex', 'currency', 'exchange rate',
-                'profit', 'revenue', 'earnings', 'dividend', 'bull market', 'bear market',
-                'nasdaq', 'dow jones', 'ftse', 's&p 500', 'inflation', 'deflation', 'gdp',
-                'recession', 'depression', 'fiscal', 'monetary', 'credit', 'debt', 'loan',
-                'mortgage', 'pension', 'hedge fund', 'mutual fund', 'etf', 'cryptocurrency',
-                'bitcoin', 'ethereum', 'crypto', 'blockchain finance', 'fintech', 'wealth management',
-                'asset', 'capital', 'valuation', 'analyst', 'rating', 'index', 'benchmark'
+                
+                # Banking
+                'bank', 'banking', 'banker', 'central bank', 'federal reserve', 'interest rate',
+                'lloyds', 'barclays', 'hsbc', 'natwest', 'santander', 'citibank', 'jpmorgan',
+                
+                # Markets
+                'wall street', 'bonds', 'treasury', 'equity', 'commodities', 'forex', 'currency',
+                'exchange rate', 'bull market', 'bear market', 'nasdaq', 'dow jones', 'ftse',
+                's&p 500', 's&p', 'dow', 'index', 'benchmark',
+                
+                # Economic indicators
+                'inflation', 'deflation', 'gdp', 'recession', 'depression', 'fiscal', 'monetary',
+                'unemployment', 'employment', 'wage', 'salary',
+                
+                # Financial products
+                'credit', 'debt', 'loan', 'mortgage', 'pension', 'hedge fund', 'mutual fund',
+                'etf', 'asset', 'capital', 'valuation', 'ipo', 'dividend',
+                
+                # Crypto (if not tech-focused)
+                'cryptocurrency', 'bitcoin', 'ethereum', 'crypto', 'blockchain finance', 'fintech',
+                
+                # Financial activities
+                'profit', 'revenue', 'earnings', 'loss', 'turnover', 'quarter', 'quarterly',
+                'annual report', 'balance sheet', 'cash flow', 'analyst', 'rating',
+                
+                # Financial institutions
+                'wealth management', 'insurance', 'pension fund', 'sovereign wealth',
+                'investment bank', 'retail bank', 'commercial bank',
+                
+                # Money-related
+                'money', 'cash', 'pound', 'dollar', 'euro', 'yen', 'price', 'cost',
+                'spending', 'savings', 'budget', 'tax', 'taxation'
             ],
             'Politics': [
                 'politics', 'political', 'government', 'parliament', 'congress', 'senate', 'election',
