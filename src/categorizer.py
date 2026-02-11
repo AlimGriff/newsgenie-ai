@@ -19,55 +19,74 @@ class ArticleCategorizer:
                 'internet', 'online', 'web', 'startup', 'silicon valley', 'gadget', 'innovation',
                 'coding', 'programming', 'developer', 'google', 'apple', 'microsoft', 'amazon',
                 'facebook', 'meta', 'twitter', 'tesla', 'spacex', 'robot', 'automation', 'blockchain',
-                'cryptocurrency', 'bitcoin', 'cloud computing', '5g', 'virtual reality', 'vr', 'ar'
+                'cryptocurrency', 'bitcoin', 'cloud computing', '5g', 'virtual reality', 'vr', 'ar',
+                'tech giant', 'tech company', 'chip', 'semiconductor', 'processor', 'gaming'
             ],
             'Sports': [
                 'sport', 'football', 'soccer', 'basketball', 'baseball', 'tennis', 'golf', 'cricket',
                 'rugby', 'hockey', 'olympics', 'world cup', 'championship', 'league', 'tournament',
                 'match', 'game', 'player', 'team', 'coach', 'athlete', 'fifa', 'nba', 'nfl', 'mlb',
                 'premier league', 'champions league', 'medal', 'trophy', 'score', 'goal', 'win',
-                'defeat', 'boxing', 'mma', 'ufc', 'formula 1', 'f1', 'racing', 'marathon', 'swimming'
+                'defeat', 'boxing', 'mma', 'ufc', 'formula 1', 'f1', 'racing', 'marathon', 'swimming',
+                'super bowl', 'world series', 'final', 'semifinal', 'playoff', 'stadium', 'arena'
             ],
             'Business': [
-                'business', 'economy', 'finance', 'market', 'stock', 'trade', 'company', 'corporate',
-                'investment', 'investor', 'wall street', 'bank', 'banking', 'profit', 'revenue',
-                'earnings', 'merger', 'acquisition', 'ceo', 'executive', 'startup', 'entrepreneur',
-                'industry', 'retail', 'e-commerce', 'sales', 'customer', 'brand', 'marketing',
-                'nasdaq', 'dow jones', 'ftse', 'inflation', 'gdp', 'unemployment', 'interest rate'
+                'business', 'company', 'corporate', 'startup', 'entrepreneur', 'industry', 'retail',
+                'e-commerce', 'sales', 'customer', 'brand', 'marketing', 'ceo', 'executive',
+                'merger', 'acquisition', 'venture capital', 'ipo', 'partnership', 'deal',
+                'supply chain', 'manufacturing', 'production', 'workforce', 'employment',
+                'hiring', 'layoff', 'expansion', 'growth strategy', 'business model'
+            ],
+            'Finance': [
+                'finance', 'financial', 'economy', 'economic', 'market', 'stock', 'stocks', 'share',
+                'shares', 'trading', 'trader', 'investment', 'investor', 'investing', 'portfolio',
+                'wall street', 'bank', 'banking', 'central bank', 'federal reserve', 'interest rate',
+                'bonds', 'treasury', 'equity', 'commodities', 'forex', 'currency', 'exchange rate',
+                'profit', 'revenue', 'earnings', 'dividend', 'bull market', 'bear market',
+                'nasdaq', 'dow jones', 'ftse', 's&p 500', 'inflation', 'deflation', 'gdp',
+                'recession', 'depression', 'fiscal', 'monetary', 'credit', 'debt', 'loan',
+                'mortgage', 'pension', 'hedge fund', 'mutual fund', 'etf', 'cryptocurrency',
+                'bitcoin', 'ethereum', 'crypto', 'blockchain finance', 'fintech', 'wealth management',
+                'asset', 'capital', 'valuation', 'analyst', 'rating', 'index', 'benchmark'
             ],
             'Politics': [
                 'politics', 'political', 'government', 'parliament', 'congress', 'senate', 'election',
                 'vote', 'democracy', 'president', 'prime minister', 'minister', 'policy', 'law',
                 'legislation', 'campaign', 'party', 'republican', 'democrat', 'conservative', 'labour',
-                'diplomatic', 'treaty', 'summit', 'white house', 'downing street', 'capitol'
+                'diplomatic', 'treaty', 'summit', 'white house', 'downing street', 'capitol',
+                'senator', 'representative', 'governor', 'mayor', 'referendum', 'ballot'
             ],
             'Entertainment': [
                 'entertainment', 'movie', 'film', 'cinema', 'actor', 'actress', 'celebrity', 'music',
                 'concert', 'album', 'song', 'singer', 'band', 'tv', 'television', 'show', 'series',
                 'netflix', 'disney', 'hollywood', 'bollywood', 'oscar', 'grammy', 'emmy', 'theater',
-                'theatre', 'performance', 'artist', 'fashion', 'style'
+                'theatre', 'performance', 'artist', 'fashion', 'style', 'streaming', 'premiere',
+                'box office', 'red carpet', 'awards', 'nomination', 'soundtrack'
             ],
             'Health': [
                 'health', 'medical', 'medicine', 'doctor', 'hospital', 'patient', 'disease', 'virus',
                 'vaccine', 'covid', 'coronavirus', 'pandemic', 'epidemic', 'healthcare', 'treatment',
                 'drug', 'pharmaceutical', 'surgery', 'therapy', 'mental health', 'fitness', 'wellness',
-                'nutrition', 'diet', 'obesity', 'cancer', 'diabetes', 'research', 'clinical trial'
+                'nutrition', 'diet', 'obesity', 'cancer', 'diabetes', 'research', 'clinical trial',
+                'symptom', 'diagnosis', 'cure', 'prevention', 'immune', 'prescription'
             ],
             'Science': [
                 'science', 'scientific', 'research', 'study', 'university', 'discovery', 'experiment',
                 'physics', 'chemistry', 'biology', 'astronomy', 'space', 'nasa', 'planet', 'climate',
-                'environment', 'evolution', 'gene', 'dna', 'laboratory', 'professor', 'academic'
+                'environment', 'evolution', 'gene', 'dna', 'laboratory', 'professor', 'academic',
+                'scientist', 'breakthrough', 'innovation', 'telescope', 'microscope', 'species'
             ],
             'World': [
                 'international', 'global', 'world', 'foreign', 'country', 'nation', 'conflict',
-                'war', 'peace', 'united nations', 'refugee', 'migration', 'border', 'crisis'
+                'war', 'peace', 'united nations', 'refugee', 'migration', 'border', 'crisis',
+                'embassy', 'ambassador', 'sanctions', 'humanitarian', 'geopolitical'
             ]
         }
         
         # Anti-keywords to prevent miscategorization
         self.exclusion_keywords = {
-            'Technology': ['food tech', 'banking technology'],  # Don't categorize food/banking as tech
-            'Sports': ['sports bar', 'sports betting'],  # Avoid non-sports content
+            'Technology': ['food tech', 'med tech', 'health tech'],
+            'Sports': ['sports bar', 'sports betting', 'esports'],
         }
     
     def categorize(self, article: Dict) -> str:
@@ -79,12 +98,14 @@ class ArticleCategorizer:
         source = article.get('source', '').lower()
         
         # Direct source matching (most reliable)
-        if any(sport in source_url or sport in source for sport in ['espn', 'skysports', 'bbc-sport', 'sports.yahoo']):
+        if any(sport in source_url or sport in source for sport in ['espn', 'skysports', 'bbc-sport', 'sports.yahoo', '/sport/']):
             return 'Sports'
         if any(tech in source_url or tech in source for tech in ['techcrunch', 'theverge', 'wired', 'arstechnica']):
             return 'Technology'
         if any(biz in source_url or biz in source for biz in ['reuters/business', 'ft.com', 'bloomberg']):
             return 'Business'
+        if any(fin in source_url or fin in source for fin in ['reuters/markets', 'marketwatch', 'investing.com']):
+            return 'Finance'
         
         # Score each category
         category_scores = {}
@@ -117,10 +138,11 @@ class ArticleCategorizer:
             
             # Require minimum threshold
             if category_scores[best_category] >= 2:
-                logger.info(f"Categorized as {best_category} (score: {category_scores[best_category]})")
+                logger.info(f"Categorized '{article.get('title', 'Unknown')}' as {best_category} (score: {category_scores[best_category]})")
                 return best_category
         
         # Default to General if no clear match
+        logger.info(f"Categorized '{article.get('title', 'Unknown')}' as General (no clear match)")
         return 'General'
     
     def categorize_batch(self, articles: List[Dict]) -> List[Dict]:
