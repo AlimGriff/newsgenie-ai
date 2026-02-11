@@ -41,7 +41,7 @@ CATEGORIES = [
 ]
 
 # Model configurations
-SUMMARIZATION_MODEL = "facebook/bart-large-cnn"
+SUMMARIZATION_MODEL = "simple"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 # App settings
