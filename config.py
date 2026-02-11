@@ -34,6 +34,10 @@ NEWS_SOURCES = {
         "https://feeds.reuters.com/reuters/businessNews",
         "https://www.ft.com/?format=rss",
         
+        # Finance
+        "https://feeds.reuters.com/reuters/marketsNews",
+        "https://www.ft.com/companies?format=rss",
+        
         # Entertainment
         "https://www.hollywoodreporter.com/feed/",
         "https://variety.com/feed/",
@@ -59,6 +63,7 @@ NEWS_SOURCES = {
 CATEGORIES = [
     "Technology",
     "Business",
+    "Finance",
     "Politics",
     "Sports",
     "Entertainment",
