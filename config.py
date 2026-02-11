@@ -1,3 +1,14 @@
+import os
+from pathlib import Path
+
+# Base directories
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+
+# API Keys (use environment variables in production)
+NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+
 # News sources
 NEWS_SOURCES = {
     "rss_feeds": [
@@ -43,3 +54,25 @@ NEWS_SOURCES = {
         "bbc-sport"
     ]
 }
+
+# Categories
+CATEGORIES = [
+    "Technology",
+    "Business",
+    "Politics",
+    "Sports",
+    "Entertainment",
+    "Health",
+    "Science",
+    "World",
+    "General"
+]
+
+# Model configurations
+SUMMARIZATION_MODEL = "simple"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+
+# App settings
+MAX_ARTICLES_PER_FETCH = 50
+SUMMARY_MAX_LENGTH = 150
+SUMMARY_MIN_LENGTH = 50
