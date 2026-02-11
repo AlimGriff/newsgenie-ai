@@ -305,5 +305,21 @@ def main():
             
             for article in articles:
                 title = article.get('title', '').lower()
-                summary = article.get('summary
-
+                summary = article.get('summary', '').lower()
+                
+                if query_lower in title or query_lower in summary:
+                    search_results.append(article)
+            
+            st.write(f"Found {len(search_results)} results for '{search_query}'")
+            
+            if search_results:
+                for article in search_results:
+                    display_article(article)
+            else:
+                st.info("No articles found matching your search. Try different keywords.")
+        else:
+            st.info("Enter a search term to find relevant articles")
+
+
+if __name__ == "__main__":
+    main()
