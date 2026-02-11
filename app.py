@@ -13,7 +13,6 @@ from src.sentiment_analyzer import SentimentAnalyzer
 from src.trend_analyzer import TrendAnalyzer
 from config import CATEGORIES, DATA_DIR
 
-# Download NLTK data on first run
 import nltk
 try:
     nltk.data.find('tokenizers/punkt')
@@ -24,7 +23,6 @@ try:
 except LookupError:
     nltk.download('stopwords', quiet=True)
 
-# Page configuration
 st.set_page_config(
     page_title="NewsGenie AI",
     page_icon="📰",
@@ -32,7 +30,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
 st.markdown("""
 <style>
     .main-header {
@@ -66,7 +63,6 @@ st.markdown("""
 
 
 def load_models():
-    """Load all AI models."""
     summarizer = ArticleSummarizer()
     categorizer = ArticleCategorizer()
     sentiment_analyzer = SentimentAnalyzer()
@@ -76,7 +72,6 @@ def load_models():
 
 @st.cache_data(ttl=3600)
 def fetch_and_process_news(category=None):
-    """Fetch and process news articles."""
     fetcher = NewsFetcher()
     summarizer, categorizer, sentiment_analyzer, trend_analyzer = load_models()
     
@@ -92,7 +87,6 @@ def fetch_and_process_news(category=None):
 
 
 def display_article(article, show_summary=True):
-    """Display a single article card."""
     sentiment = article.get('sentiment', {})
     sentiment_label = sentiment.get('label', 'neutral')
     sentiment_class = f"sentiment-{sentiment_label}"
@@ -125,7 +119,6 @@ def main():
     with st.sidebar:
         st.markdown("## 📰 NewsGenie AI")
         st.markdown("---")
-        
         st.header("⚙️ Settings")
         
         selected_category = st.selectbox(
@@ -226,7 +219,6 @@ def main():
             source_dist = trend_analyzer.get_source_distribution(articles)
             if source_dist:
                 df_source = pd.DataFrame(list(source_dist.items()), columns=['Source', 'Count'])
-                
                 fig_source = px.bar(df_source, x='Source', y='Count', orientation='v')
                 fig_source.update_layout(showlegend=False)
                 st.plotly_chart(fig_source, use_container_width=True)
