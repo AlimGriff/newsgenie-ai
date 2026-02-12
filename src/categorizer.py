@@ -1,4 +1,3 @@
-from typing import List, Dict
 from collections import Counter
 import logging
 import re
@@ -11,14 +10,13 @@ class ArticleCategorizer:
     """Categorize news articles using keyword-based classification."""
     
     def __init__(self):
-        # Enhanced keyword mapping with more specific terms
         self.category_keywords = {
             'Technology': [
                 'tech', 'technology', 'software', 'hardware', 'computer', 'ai', 'artificial intelligence',
                 'machine learning', 'algorithm', 'data', 'cyber', 'digital', 'app', 'smartphone',
                 'internet', 'online', 'web', 'startup', 'silicon valley', 'gadget', 'innovation',
                 'coding', 'programming', 'developer', 'google', 'apple', 'microsoft', 'amazon',
-                'facebook', 'meta', 'twitter', 'tesla', 'spacex', 'robot', 'automation', 'blockchain',
+                'facebook', 'meta', 'twitter', 'robot', 'automation', 'blockchain',
                 'cryptocurrency', 'bitcoin', 'cloud computing', '5g', 'virtual reality', 'vr', 'ar',
                 'tech giant', 'tech company', 'chip', 'semiconductor', 'processor', 'gaming'
             ],
@@ -43,10 +41,9 @@ class ArticleCategorizer:
                 'wall street', 'bank', 'banking', 'central bank', 'federal reserve', 'interest rate',
                 'bonds', 'treasury', 'equity', 'commodities', 'forex', 'currency', 'exchange rate',
                 'profit', 'revenue', 'earnings', 'dividend', 'bull market', 'bear market',
-                'nasdaq', 'dow jones', 'ftse', 's&p 500', 'inflation', 'deflation', 'gdp',
+                'nasdaq', 'dow jones', 'ftse', 'inflation', 'deflation', 'gdp',
                 'recession', 'depression', 'fiscal', 'monetary', 'credit', 'debt', 'loan',
-                'mortgage', 'pension', 'hedge fund', 'mutual fund', 'etf', 'cryptocurrency',
-                'bitcoin', 'ethereum', 'crypto', 'blockchain finance', 'fintech', 'wealth management',
+                'mortgage', 'pension', 'hedge fund', 'mutual fund', 'etf',
                 'asset', 'capital', 'valuation', 'analyst', 'rating', 'index', 'benchmark'
             ],
             'Politics': [
@@ -74,7 +71,7 @@ class ArticleCategorizer:
                 'science', 'scientific', 'research', 'study', 'university', 'discovery', 'experiment',
                 'physics', 'chemistry', 'biology', 'astronomy', 'space', 'nasa', 'planet', 'climate',
                 'environment', 'evolution', 'gene', 'dna', 'laboratory', 'professor', 'academic',
-                'scientist', 'breakthrough', 'innovation', 'telescope', 'microscope', 'species'
+                'scientist', 'breakthrough', 'telescope', 'microscope', 'species'
             ],
             'World': [
                 'international', 'global', 'world', 'foreign', 'country', 'nation', 'conflict',
@@ -83,7 +80,6 @@ class ArticleCategorizer:
             ]
         }
         
-        # Anti-keywords to prevent miscategorization
         self.exclusion_keywords = {
             'Technology': ['food tech', 'med tech', 'health tech', 'protest', 'demonstration', 'strike'],
             'Sports': ['sports bar', 'sports betting', 'esports'],
@@ -91,14 +87,11 @@ class ArticleCategorizer:
         }
     
     def categorize(self, article):
-        """Categorize a single article with improved accuracy."""
+        """Categorize a single article."""
         text = f"{article.get('title', '')} {article.get('summary', '')}".lower()
-        
-        # Check source URL for category hints
         source_url = article.get('url', '').lower()
         source = article.get('source', '').lower()
         
-        # Direct source matching (most reliable)
         if any(sport in source_url or sport in source for sport in ['espn', 'skysports', 'bbc-sport', 'sports.yahoo', '/sport/']):
             return 'Sports'
         if any(tech in source_url or tech in source for tech in ['techcrunch', 'theverge', 'wired', 'arstechnica', '/technology/']):
@@ -108,19 +101,68 @@ class ArticleCategorizer:
         if any(biz in source_url or biz in source for biz in ['reuters/business', '/business/']):
             return 'Business'
         
-        # Score each category with weighted keywords
         category_scores = {}
-        
-        # Check title first (more weight)
         title_lower = article.get('title', '').lower()
         
         for category, keywords in self.category_keywords.items():
             score = 0
-            matches = []
             
             for keyword in keywords:
-                # Use word boundaries to avoid partial matches
                 pattern = r'\b' + re.escape(keyword) + r'\b'
                 
-                # Title matches
-
+                if re.search(pattern, title_lower):
+                    score += 3
+                elif re.search(pattern, text):
+                    score += 1
+            
+            excluded = False
+            if category in self.exclusion_keywords:
+                for exclusion in self.exclusion_keywords[category]:
+                    if exclusion in text:
+                        excluded = True
+                        break
+            
+            if not excluded and score > 0:
+                category_scores[category] = score
+        
+        if any(word in text for word in ['protest', 'demonstration', 'rally', 'march', 'activist']):
+            if 'Technology' in category_scores:
+                category_scores['Technology'] = max(0, category_scores['Technology'] - 5)
+            if 'Politics' in category_scores:
+                category_scores['Politics'] += 3
+            else:
+                category_scores['Politics'] = 3
+        
+        if any(word in text for word in ['strike', 'union', 'workers', 'employees']):
+            if 'Technology' in category_scores:
+                category_scores['Technology'] = max(0, category_scores['Technology'] - 5)
+            if 'Business' in category_scores:
+                category_scores['Business'] += 2
+        
+        if 'Finance' in category_scores and 'Business' in category_scores:
+            finance_specific = ['stock', 'market', 'trading', 'investment', 'bank', 'currency', 
+                              'inflation', 'interest rate', 'profit', 'earnings', 'revenue']
+            has_finance_specific = any(term in text for term in finance_specific)
+            
+            if has_finance_specific:
+                category_scores['Finance'] += 3
+        
+        if category_scores:
+            best_category = max(category_scores, key=category_scores.get)
+            min_threshold = 1 if best_category in ['Finance', 'Sports', 'Politics'] else 2
+            
+            if category_scores[best_category] >= min_threshold:
+                return best_category
+        
+        return 'General'
+    
+    def categorize_batch(self, articles):
+        """Categorize multiple articles."""
+        for article in articles:
+            article['category'] = self.categorize(article)
+        return articles
+    
+    def get_category_distribution(self, articles):
+        """Get distribution of articles across categories."""
+        categories = [article.get('category', 'General') for article in articles]
+        return dict(Counter(categories))
