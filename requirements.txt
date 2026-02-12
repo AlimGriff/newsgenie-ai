@@ -2,13 +2,13 @@ streamlit
 feedparser
 requests
 beautifulsoup4
-newspaper3k
 pandas>=2.2.0
 numpy>=1.26.0
 scikit-learn
 plotly
-python-dateutil
 nltk
 textblob
-lxml[html_clean]
-Pillow
+lxml
+openai
+langchain
+langchain-community
