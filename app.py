@@ -103,55 +103,5 @@ def display_article(article, show_summary=True):
         <h3>{article.get('title', 'No Title')}</h3>
         <p><strong>Source:</strong> {article.get('source', 'Unknown')} | 
            <strong>Category:</strong> {article.get('category', 'General')} | 
-           <span class="{sentiment_class}">Sentiment: {sentiment_label.upper()}</span>
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if show_summary:
-        summary = article.get('ai_summary', article.get('summary', ''))
-        if summary:
-            st.write(summary)
-    
-    col1, col2 = st.columns([1, 4])
-    with col1:
-        if article.get('url'):
-            st.link_button("Read Full Article", article['url'])
-
-
-def main():
-    st.markdown('<h1 class="main-header">📰 NewsGenie AI</h1>', unsafe_allow_html=True)
-    st.markdown("### Your Intelligent News Assistant")
-    
-    with st.sidebar:
-        st.markdown("## 📰 NewsGenie AI")
-        st.markdown("---")
-        st.header("⚙️ Settings")
-        
-        selected_category = st.selectbox(
-            "Select Category",
-            ["All"] + CATEGORIES
-        )
-        
-        num_articles = st.slider("Number of articles to display", 5, 50, 20)
-        
-        if st.button("🔄 Refresh News", use_container_width=True):
-            st.cache_data.clear()
-            st.rerun()
-        
-        st.markdown("---")
-        st.markdown("### About")
-        st.info(
-            "NewsGenie AI is your intelligent news assistant. "
-            "Chat with me to find news, analyze trends, and stay informed!"
-        )
-        
-        st.markdown("---")
-        st.markdown("### 💡 Quick Tips")
-        st.markdown("""
-        **Try asking:**
-        - "What's the top news?"
-        - "Tell me about [topic]"
-        - "What's trending?"
-        - "Show me sports
+           <span class="{sentiment_class}">Sentiment: {sentiment_label.upper
 
