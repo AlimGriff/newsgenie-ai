@@ -9,35 +9,109 @@ class ArticleCategorizer:
     
     def __init__(self):
         self.category_keywords = {
-            'Technology': ['tech', 'technology', 'software', 'app', 'digital', 'ai', 'computer'],
-            'Sports': ['sport', 'football', 'game', 'player', 'team', 'match'],
-            'Business': ['business', 'company', 'corporate', 'ceo'],
-            'Finance': ['finance', 'bank', 'stock', 'market', 'investment'],
-            'Politics': ['politics', 'government', 'election', 'minister'],
-            'Entertainment': ['entertainment', 'movie', 'music', 'celebrity'],
-            'Health': ['health', 'medical', 'hospital', 'doctor'],
-            'Science': ['science', 'research', 'study'],
-            'World': ['international', 'global', 'world']
+            'Technology': [
+                'tech', 'technology', 'software', 'hardware', 'computer', 'ai', 
+                'machine learning', 'algorithm', 'cyber', 'digital', 'app', 'smartphone',
+                'internet', 'online', 'web', 'gadget', 'coding', 'programming', 
+                'google', 'apple', 'microsoft', 'amazon', 'facebook', 'meta', 
+                'robot', 'automation', 'blockchain', 'bitcoin', 'cloud', 'chip'
+            ],
+            'Sports': [
+                'sport', 'football', 'soccer', 'basketball', 'tennis', 'golf', 
+                'cricket', 'rugby', 'hockey', 'olympics', 'world cup', 'championship', 
+                'league', 'tournament', 'match', 'game', 'player', 'team', 'coach', 
+                'athlete', 'fifa', 'nba', 'nfl', 'premier league', 'medal', 'trophy'
+            ],
+            'Business': [
+                'business', 'company', 'corporate', 'startup', 'entrepreneur', 
+                'retail', 'sales', 'customer', 'brand', 'marketing', 'ceo', 
+                'merger', 'acquisition', 'manufacturing', 'workforce', 'hiring'
+            ],
+            'Finance': [
+                'finance', 'financial', 'economy', 'economic', 'market', 'stock', 
+                'trading', 'investment', 'investor', 'wall street', 'bank', 'banking', 
+                'interest rate', 'bonds', 'currency', 'profit', 'revenue', 'earnings', 
+                'nasdaq', 'dow jones', 'ftse', 'inflation', 'recession', 'gdp'
+            ],
+            'Politics': [
+                'politics', 'political', 'government', 'parliament', 'congress', 
+                'election', 'vote', 'president', 'prime minister', 'minister', 
+                'policy', 'law', 'legislation', 'party', 'conservative', 'labour', 
+                'treaty', 'downing street', 'capitol'
+            ],
+            'Entertainment': [
+                'entertainment', 'movie', 'film', 'cinema', 'actor', 'actress', 
+                'celebrity', 'music', 'concert', 'album', 'singer', 'band', 
+                'tv', 'show', 'netflix', 'disney', 'hollywood', 'oscar', 'grammy'
+            ],
+            'Health': [
+                'health', 'medical', 'medicine', 'doctor', 'hospital', 'patient', 
+                'disease', 'virus', 'vaccine', 'covid', 'pandemic', 'healthcare', 
+                'drug', 'surgery', 'therapy', 'fitness', 'nutrition', 'cancer'
+            ],
+            'Science': [
+                'science', 'scientific', 'research', 'study', 'discovery', 
+                'experiment', 'physics', 'chemistry', 'biology', 'astronomy', 
+                'space', 'nasa', 'planet', 'climate', 'environment', 'gene'
+            ],
+            'World': [
+                'international', 'global', 'world', 'foreign', 'country', 
+                'conflict', 'war', 'peace', 'united nations', 'refugee', 
+                'migration', 'crisis', 'humanitarian'
+            ]
+        }
+        
+        self.exclusion_keywords = {
+            'Technology': ['protest', 'demonstration', 'strike'],
+            'Sports': ['sports bar', 'sports betting'],
         }
     
     def categorize(self, article):
-        text = article.get('title', '').lower()
+        text = f"{article.get('title', '')} {article.get('summary', '')}".lower()
+        source_url = article.get('url', '').lower()
+        source = article.get('source', '').lower()
+        title_lower = article.get('title', '').lower()
+        
+        if any(s in source_url or s in source for s in ['espn', 'skysports', '/sport/']):
+            return 'Sports'
+        if any(s in source_url or s in source for s in ['techcrunch', 'theverge', '/technology/']):
+            return 'Technology'
+        if any(s in source_url or s in source for s in ['/finance/', 'ft.com']):
+            return 'Finance'
+        if any(s in source_url or s in source for s in ['/business/']):
+            return 'Business'
         
         category_scores = {}
+        
         for category, keywords in self.category_keywords.items():
-            score = sum(1 for keyword in keywords if keyword in text)
-            if score > 0:
+            score = 0
+            
+            for keyword in keywords:
+                pattern = r'\b' + re.escape(keyword) + r'\b'
+                if re.search(pattern, title_lower):
+                    score += 3
+                elif re.search(pattern, text):
+                    score += 1
+            
+            excluded = False
+            if category in self.exclusion_keywords:
+                for exclusion in self.exclusion_keywords[category]:
+                    if exclusion in text:
+                        excluded = True
+                        break
+            
+            if not excluded and score > 0:
                 category_scores[category] = score
         
-        if category_scores:
-            return max(category_scores, key=category_scores.get)
-        return 'General'
-    
-    def categorize_batch(self, articles):
-        for article in articles:
-            article['category'] = self.categorize(article)
-        return articles
-    
-    def get_category_distribution(self, articles):
-        categories = [article.get('category', 'General') for article in articles]
-        return dict(Counter(categories))
+        if any(word in text for word in ['protest', 'demonstration', 'rally']):
+            if 'Technology' in category_scores:
+                category_scores['Technology'] = max(0, category_scores['Technology'] - 5)
+            if 'Politics' in category_scores:
+                category_scores['Politics'] += 3
+            else:
+                category_scores['Politics'] = 3
+        
+        if any(word in text for word in ['strike', 'union', 'workers']):
+            if 'Technology' in category_scores:
+                category_scores['Technology'] =
+
