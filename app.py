@@ -77,7 +77,7 @@ def load_models():
     return summarizer, categorizer, sentiment_analyzer, trend_analyzer
 
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=300)
 def fetch_and_process_news(category=None):
     fetcher = NewsFetcher()
     summarizer, categorizer, sentiment_analyzer, trend_analyzer = load_models()
