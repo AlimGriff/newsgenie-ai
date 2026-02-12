@@ -12,3 +12,7 @@ lxml
 openai
 langchain
 langchain-community
+transformers
+torch
+sentencepiece
+accelerate
