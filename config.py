@@ -9,53 +9,67 @@ DATA_DIR = BASE_DIR / "data"
 NEWS_API_KEY = os.getenv("NEWS_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
-# News sources
 NEWS_SOURCES = {
-    "rss_feeds": [
-        # General News
-        "http://rss.cnn.com/rss/cnn_topstories.rss",
-        "http://feeds.bbci.co.uk/news/rss.xml",
-        "https://www.theguardian.com/world/rss",
+    'news_api': {
+        'base_url': 'https://newsapi.org/v2/top-headlines',
+        'categories': ['general', 'business', 'technology', 'sports', 'entertainment', 'health', 'science']
+    },
+    'rss_feeds': [
+        # BBC News (UK)
+        'http://feeds.bbci.co.uk/news/rss.xml',
+        'http://feeds.bbci.co.uk/news/uk/rss.xml',
+        'http://feeds.bbci.co.uk/news/world/rss.xml',
+        'http://feeds.bbci.co.uk/news/business/rss.xml',
+        'http://feeds.bbci.co.uk/news/technology/rss.xml',
+        'http://feeds.bbci.co.uk/sport/rss.xml',
         
-        # Technology
-        "https://techcrunch.com/feed/",
-        "https://www.theverge.com/rss/index.xml",
-        "https://www.wired.com/feed/rss",
-        "https://arstechnica.com/feed/",
+        # The Guardian (UK)
+        'https://www.theguardian.com/uk/rss',
+        'https://www.theguardian.com/world/rss',
+        'https://www.theguardian.com/business/rss',
+        'https://www.theguardian.com/technology/rss',
+        'https://www.theguardian.com/sport/rss',
         
-        # Sports
-        "http://feeds.bbci.co.uk/sport/rss.xml",
-        "https://www.espn.com/espn/rss/news",
-        "https://www.skysports.com/rss/12040",
-        "https://sports.yahoo.com/rss/",
-        "https://www.theguardian.com/sport/rss",
+        # Sky News (UK)
+        'https://feeds.skynews.com/feeds/rss/uk.xml',
+        'https://feeds.skynews.com/feeds/rss/world.xml',
+        'https://feeds.skynews.com/feeds/rss/business.xml',
+        'https://feeds.skynews.com/feeds/rss/technology.xml',
         
-        # Business
-        "https://feeds.reuters.com/reuters/businessNews",
-        "https://www.ft.com/?format=rss",
+        # Reuters (International)
+        'https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best',
+        'https://www.reuters.com/rssfeed/businessNews',
+        'https://www.reuters.com/rssfeed/technologyNews',
+        'https://www.reuters.com/rssfeed/worldNews',
         
-        # Finance
-        "https://feeds.reuters.com/reuters/marketsNews",
-        "https://www.ft.com/companies?format=rss",
+        # Independent (UK)
+        'https://www.independent.co.uk/news/uk/rss',
+        'https://www.independent.co.uk/news/world/rss',
+        'https://www.independent.co.uk/news/business/rss',
+        'https://www.independent.co.uk/sport/rss',
         
-        # Entertainment
-        "https://www.hollywoodreporter.com/feed/",
-        "https://variety.com/feed/",
+        # Financial Times (UK - Business/Finance)
+        'https://www.ft.com/?format=rss',
         
-        # Health
-        "https://www.medicalnewstoday.com/rss/news.xml",
+        # Al Jazeera (International)
+        'https://www.aljazeera.com/xml/rss/all.xml',
         
-        # Science
-        "https://www.sciencedaily.com/rss/all.xml",
-    ],
-    "news_api_sources": [
-        "bbc-news",
-        "cnn",
-        "the-verge",
-        "techcrunch",
-        "reuters",
-        "espn",
-        "bbc-sport"
+        # CNN (International)
+        'http://rss.cnn.com/rss/edition.rss',
+        'http://rss.cnn.com/rss/edition_world.rss',
+        'http://rss.cnn.com/rss/edition_technology.rss',
+        
+        # Bloomberg (Business/Finance)
+        'https://feeds.bloomberg.com/markets/news.rss',
+        
+        # TechCrunch (Technology)
+        'https://techcrunch.com/feed/',
+        
+        # The Verge (Technology)
+        'https://www.theverge.com/rss/index.xml',
+        
+        # ESPN (Sports)
+        'https://www.espn.com/espn/rss/news',
     ]
 }
 
